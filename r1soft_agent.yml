@@ -37,7 +37,7 @@
   #     state: stopped
   #     enabled: no
   - name: Get key
-    command: "r1soft-setup --get-key http://54.89.231.60:8080"
+    command: "r1soft-setup --get-key http://54.226.6.210:8080"
   - name: start agent
     service:
       name: cdp-agent
