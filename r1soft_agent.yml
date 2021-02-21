@@ -1,0 +1,45 @@
+---
+- name: Install R1soft Agent
+  become: yes
+  become_method: sudo
+  user: centos
+  hosts: agent
+  tasks:
+  - name: Create repo
+    copy:
+      src: r1soft.repo
+      dest: /etc/yum.repos.d
+    ignore_errors: true  
+  - name:
+    shell: mv /etc/yum.repos.d/Cen*  /tmp
+    ignore_errors: true
+  - name: Install agent
+    yum:
+      name: serverbackup-enterprise-agent
+      state: present
+    ignore_errors: true 
+
+  - name: start agent
+    shell: /etc/init.d/cdp-agent
+    ignore_errors: true   
+
+  - name: install
+    yum:
+      name: 
+      - kernel-devel
+      - kernel-headers
+      - distro-sync  
+    ignore_errors: true       
+
+  # - name: stop Iptables
+  #   service:
+  #     name: iptables
+  #     state: stopped
+  #     enabled: no
+  - name: Get key
+    command: "r1soft-setup --get-key http://54.89.231.60:8080"
+  - name: start agent
+    service:
+      name: cdp-agent
+      state: restarted
+      enabled: yes
